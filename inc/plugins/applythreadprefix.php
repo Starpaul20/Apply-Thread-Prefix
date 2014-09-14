@@ -18,9 +18,12 @@ $plugins->add_hook("forumdisplay_start", "applythreadprefix_lang");
 // The information that shows up on the plugin manager
 function applythreadprefix_info()
 {
+	global $lang;
+	$lang->load("applythreadprefix", true);
+
 	return array(
-		"name"				=> "Apply Thread Prefix",
-		"description"		=> "Allows moderators to apply a thread prefix to threads without having to edit the post.",
+		"name"				=> $lang->applythreadprefix_info_name,
+		"description"		=> $lang->applythreadprefix_info_desc,
 		"website"			=> "http://galaxiesrealm.com/index.php",
 		"author"			=> "Starpaul20",
 		"authorsite"		=> "http://galaxiesrealm.com/index.php",

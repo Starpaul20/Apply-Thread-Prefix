@@ -4,6 +4,9 @@
  * Copyright 2011 Starpaul20
  */
 
+$l['applythreadprefix_info_name'] = "Apply Thread Prefix";
+$l['applythreadprefix_info_desc'] = "Allows moderators to apply a thread prefix to threads without having to edit the post.";
+
 $l['apply_thread_prefix'] = "Apply Thread Prefix";
 $l['new_prefix'] = "New Prefix:";
 $l['prefix_note'] = "Please note any prefix this thread currently has will be overwritten";
