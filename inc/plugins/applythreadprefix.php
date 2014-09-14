@@ -108,8 +108,8 @@ function applythreadprefix_activate()
 	$db->insert_query("templates", $insert_array);
 
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
-	find_replace_templatesets("showthread_moderationoptions", "#".preg_quote('</optgroup>')."#i", '<option value="applyprefix">{$lang->apply_thread_prefix}</option></optgroup>');
-	find_replace_templatesets("forumdisplay_inlinemoderation", "#".preg_quote('</optgroup>')."#i", '<option value="multiapplyprefix">{$lang->apply_thread_prefix}</option></optgroup>');
+	find_replace_templatesets("showthread_moderationoptions_standard", "#".preg_quote('</optgroup>')."#i", '<option value="applyprefix">{$lang->apply_thread_prefix}</option></optgroup>');
+	find_replace_templatesets("forumdisplay_inlinemoderation_standard", "#".preg_quote('</optgroup>')."#i", '<option value="multiapplyprefix">{$lang->apply_thread_prefix}</option></optgroup>');
 }
 
 // This function runs when the plugin is deactivated.
@@ -119,8 +119,8 @@ function applythreadprefix_deactivate()
 	$db->delete_query("templates", "title IN('moderation_applyprefix','moderation_inline_applyprefix')");
 
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
-	find_replace_templatesets("showthread_moderationoptions", "#".preg_quote('<option value="applyprefix">{$lang->apply_thread_prefix}</option>')."#i", '', 0);
-	find_replace_templatesets("forumdisplay_inlinemoderation", "#".preg_quote('<option value="multiapplyprefix">{$lang->apply_thread_prefix}</option>')."#i", '', 0);
+	find_replace_templatesets("showthread_moderationoptions_standard", "#".preg_quote('<option value="applyprefix">{$lang->apply_thread_prefix}</option>')."#i", '', 0);
+	find_replace_templatesets("forumdisplay_inlinemoderation_standard", "#".preg_quote('<option value="multiapplyprefix">{$lang->apply_thread_prefix}</option>')."#i", '', 0);
 }
 
 // Apply Thread Prefix moderation page
