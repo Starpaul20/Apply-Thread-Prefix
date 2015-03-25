@@ -144,16 +144,16 @@ function applythreadprefix_run()
 		eval("\$loginbox = \"".$templates->get("loginbox")."\";");
 	}
 
-	$tid = intval($mybb->input['tid']);
+	$tid = $mybb->get_input('tid', MyBB::INPUT_INT);
 	$thread = get_thread($tid);
 
-	$fid = intval($mybb->input['fid']);
+	$fid = $mybb->get_input('fid', MyBB::INPUT_INT);
 	$forum = get_forum($fid);
 
 	if($mybb->input['action'] == "applyprefix" && $mybb->request_method == "post")
 	{
 		// Verify incoming POST request
-		verify_post_check($mybb->input['my_post_key']);
+		verify_post_check($mybb->get_input('my_post_key'));
 
 		if(!is_moderator($thread['fid'], "canmanagethreads"))
 		{
@@ -182,7 +182,7 @@ function applythreadprefix_run()
 	if($mybb->input['action'] == "do_applyprefix" && $mybb->request_method == "post")
 	{
 		// Verify incoming POST request
-		verify_post_check($mybb->input['my_post_key']);
+		verify_post_check($mybb->get_input('my_post_key'));
 
 		if(!is_moderator($thread['fid'], "canmanagethreads"))
 		{
@@ -204,7 +204,7 @@ function applythreadprefix_run()
 	if($mybb->input['action'] == "multiapplyprefix" && $mybb->request_method == "post")
 	{
 		// Verify incoming POST request
-		verify_post_check($mybb->input['my_post_key']);
+		verify_post_check($mybb->get_input('my_post_key'));
 
 		if(!is_moderator($forum['fid'], "canmanagethreads"))
 		{
@@ -240,12 +240,12 @@ function applythreadprefix_run()
 	if($mybb->input['action'] == "do_multiapplyprefix" && $mybb->request_method == "post")
 	{
 		// Verify incoming POST request
-		verify_post_check($mybb->input['my_post_key']);
+		verify_post_check($mybb->get_input('my_post_key'));
 
 		$threadlist = explode("|", $mybb->input['threads']);
 		foreach($threadlist as $tid)
 		{
-			$tid = intval($tid);
+			$tid = (int)$tid;
 			$tlist[] = $tid;
 		}
 
