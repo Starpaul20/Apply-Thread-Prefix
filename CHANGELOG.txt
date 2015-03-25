@@ -1,3 +1,9 @@
+1.1 (March 25th, 2015)
+- Using get_input instead of intval input
+- Sanitized threadprefix input
+- Updated moderation option dropdown location
+- Allow multiapplyprefix to be used in search results
+
 1.0 (September 14th, 2014)
 - Updated plugin to work with MyBB 1.8
 

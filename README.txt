@@ -1,6 +1,6 @@
 ## INFORMATION ##
 
-Apply Thread Prefix (1.0) for MyBB 1.8
+Apply Thread Prefix (1.1) for MyBB 1.8
 Created by: Starpaul20
 Copyright: ©2011
 License: GPL
@@ -24,4 +24,4 @@ The 'oldrelease' branch contains the 1.6 version of the plugin.
 
 ## UPDATING ##
 
-Any beta version should be reinstalled.
+If you're updating from any previous version, you must first deactivate the plugin, upload all new files and reactivate.
