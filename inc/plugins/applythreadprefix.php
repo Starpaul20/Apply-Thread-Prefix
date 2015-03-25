@@ -189,12 +189,13 @@ function applythreadprefix_run()
 			error_no_permission();
 		}
 
-		if(!intval($mybb->input['threadprefix']))
+		$threadprefix = $mybb->get_input('threadprefix', MyBB::INPUT_INT);
+		if(!$threadprefix)
 		{
 			error($lang->no_prefix_selected);
 		}
 
-		$moderation->apply_thread_prefix($thread['tid'], $mybb->input['threadprefix']);
+		$moderation->apply_thread_prefix($thread['tid'], $threadprefix);
 
 		log_moderator_action(array("tid" => $thread['tid'], "fid" => $thread['fid']), $lang->thread_prefix_applied);
 
@@ -254,12 +255,13 @@ function applythreadprefix_run()
 			error_no_permission();
 		}
 
-		if(!intval($mybb->input['threadprefix']))
+		$threadprefix = $mybb->get_input('threadprefix', MyBB::INPUT_INT);
+		if(!$threadprefix)
 		{
 			error($lang->no_prefix_selected);
 		}
 
-		$moderation->apply_thread_prefix($tlist, $mybb->input['threadprefix']);
+		$moderation->apply_thread_prefix($tlist, $threadprefix);
 
 		log_moderator_action(array("fid" => $forum['fid']), $lang->thread_prefix_applied);
 
