@@ -207,17 +207,23 @@ function applythreadprefix_run()
 		// Verify incoming POST request
 		verify_post_check($mybb->get_input('my_post_key'));
 
-		if(!is_moderator($forum['fid'], "canmanagethreads"))
+		if(!empty($mybb->input['searchid']))
 		{
-			error_no_permission();
+			// From search page
+			$threads = getids($mybb->get_input('searchid'), 'search');
+			if(!is_moderator_by_tids($threads, 'candeletethreads'))
+			{
+				error_no_permission();
+			}
 		}
-
-		if(!$forum['fid'])
+		else
 		{
-			error($lang->error_invalidforum);
+			$threads = getids($forum['fid'], 'forum');
+			if(!is_moderator($forum['fid'], 'candeletethreads'))
+			{
+				error_no_permission();
+			}
 		}
-
-		$threads = getids($fid, 'forum');
 
 		if(count($threads) < 1)
 		{
@@ -225,7 +231,14 @@ function applythreadprefix_run()
 		}
 
 		$inlineids = implode("|", $threads);
-		clearinline($fid, 'forum');
+		if($mybb->get_input('inlinetype') == 'search')
+		{
+			clearinline($mybb->get_input('searchid', MyBB::INPUT_INT), 'search');
+		}
+		else
+		{
+			clearinline($forum['fid'], 'forum');
+		}
 
 		check_forum_password($forum['fid']);
 
@@ -243,16 +256,14 @@ function applythreadprefix_run()
 		// Verify incoming POST request
 		verify_post_check($mybb->get_input('my_post_key'));
 
-		$threadlist = explode("|", $mybb->input['threads']);
-		foreach($threadlist as $tid)
-		{
-			$tid = (int)$tid;
-			$tlist[] = $tid;
-		}
-
-		if(!is_moderator($forum['fid'], "canmanagethreads"))
+		$threadlist = explode("|", $mybb->get_input('threads'));
+		if(!is_moderator_by_tids($threadlist, "canmanagethreads"))
 		{
 			error_no_permission();
+		}
+		foreach($threadlist as $tid)
+		{
+			$tlist[] = (int)$tid;
 		}
 
 		$threadprefix = $mybb->get_input('threadprefix', MyBB::INPUT_INT);
