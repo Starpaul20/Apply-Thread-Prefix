@@ -175,6 +175,12 @@ function applythreadprefix_run()
 
 		$prefixselect = build_prefix_select($thread['fid'], $mybb->input['threadprefix']);
 
+		// If there are no prefixes, throw error message
+		if(!$prefixselect)
+		{
+			error($lang->error_no_prefixes);
+		}
+
 		eval("\$applyprefix = \"".$templates->get("moderation_applyprefix")."\";");
 		output_page($applyprefix);
 	}
@@ -246,6 +252,12 @@ function applythreadprefix_run()
 		add_breadcrumb($lang->nav_apply_prefix);
 
 		$prefixselect = build_prefix_select($forum['fid'], $mybb->input['threadprefix']);
+
+		// If there are no prefixes, throw error message
+		if(!$prefixselect)
+		{
+			error($lang->error_no_prefixes);
+		}
 
 		eval("\$multiapplyprefix = \"".$templates->get("moderation_inline_applyprefix")."\";");
 		output_page($multiapplyprefix);
