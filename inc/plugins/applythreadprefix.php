@@ -10,10 +10,31 @@ if(!defined("IN_MYBB"))
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
+// Neat trick for caching our custom template(s)
+if(my_strpos($_SERVER['PHP_SELF'], 'showthread.php'))
+{
+	global $templatelist;
+	if(isset($templatelist))
+	{
+		$templatelist .= ',';
+	}
+	$templatelist .= 'showthread_moderationoptions_applyprefix';
+}
+
+if(my_strpos($_SERVER['PHP_SELF'], 'forumdisplay.php'))
+{
+	global $templatelist;
+	if(isset($templatelist))
+	{
+		$templatelist .= ',';
+	}
+	$templatelist .= 'forumdisplay_inlinemoderation_applyprefix';
+}
+
 // Tell MyBB when to run the hooks
 $plugins->add_hook("moderation_start", "applythreadprefix_run");
-$plugins->add_hook("showthread_start", "applythreadprefix_lang");
-$plugins->add_hook("forumdisplay_start", "applythreadprefix_lang");
+$plugins->add_hook("showthread_start", "applythreadprefix_thread");
+$plugins->add_hook("forumdisplay_start", "applythreadprefix_forum");
 
 // The information that shows up on the plugin manager
 function applythreadprefix_info()
@@ -108,20 +129,38 @@ function applythreadprefix_activate()
 	);
 	$db->insert_query("templates", $insert_array);
 
+	$insert_array = array(
+		'title'		=> 'showthread_moderationoptions_applyprefix',
+		'template'	=> $db->escape_string('<option value="applyprefix">{$lang->apply_thread_prefix}</option>'),
+		'sid'		=> '-1',
+		'version'	=> '',
+		'dateline'	=> TIME_NOW
+	);
+	$db->insert_query("templates", $insert_array);
+
+	$insert_array = array(
+		'title'		=> 'forumdisplay_inlinemoderation_applyprefix',
+		'template'	=> $db->escape_string('<option value="multiapplyprefix">{$lang->apply_thread_prefix}</option>'),
+		'sid'		=> '-1',
+		'version'	=> '',
+		'dateline'	=> TIME_NOW
+	);
+	$db->insert_query("templates", $insert_array);
+
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
-	find_replace_templatesets("showthread_moderationoptions_manage", "#".preg_quote('{$lang->remove_subscriptions}</option>')."#i", '{$lang->remove_subscriptions}</option><option value="applyprefix">{$lang->apply_thread_prefix}</option>');
-	find_replace_templatesets("forumdisplay_inlinemoderation_manage", "#".preg_quote('{$lang->move_threads}</option>')."#i", '{$lang->move_threads}</option><option value="multiapplyprefix">{$lang->apply_thread_prefix}</option>');
+	find_replace_templatesets("showthread_moderationoptions_manage", "#".preg_quote('{$lang->remove_subscriptions}</option>')."#i", '{$lang->remove_subscriptions}</option>{$applyprefix}');
+	find_replace_templatesets("forumdisplay_inlinemoderation_manage", "#".preg_quote('{$lang->move_threads}</option>')."#i", '{$lang->move_threads}</option>{$applyprefix}');
 }
 
 // This function runs when the plugin is deactivated.
 function applythreadprefix_deactivate()
 {
 	global $db;
-	$db->delete_query("templates", "title IN('moderation_applyprefix','moderation_inline_applyprefix')");
+	$db->delete_query("templates", "title IN('moderation_applyprefix','moderation_inline_applyprefix','showthread_moderationoptions_applyprefix','forumdisplay_inlinemoderation_applyprefix')");
 
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
-	find_replace_templatesets("showthread_moderationoptions_manage", "#".preg_quote('<option value="applyprefix">{$lang->apply_thread_prefix}</option>')."#i", '', 0);
-	find_replace_templatesets("forumdisplay_inlinemoderation_manage", "#".preg_quote('<option value="multiapplyprefix">{$lang->apply_thread_prefix}</option>')."#i", '', 0);
+	find_replace_templatesets("showthread_moderationoptions_manage", "#".preg_quote('{$applyprefix}')."#i", '', 0);
+	find_replace_templatesets("forumdisplay_inlinemoderation_manage", "#".preg_quote('{$applyprefix}')."#i", '', 0);
 }
 
 // Apply Thread Prefix moderation page
@@ -293,11 +332,94 @@ function applythreadprefix_run()
 	exit;
 }
 
-// Shows language on show thread and forum display
-function applythreadprefix_lang()
+// Add option to show thread mod menu
+function applythreadprefix_thread()
 {
-	global $lang;
+	global $lang, $templates, $applyprefix, $thread;
 	$lang->load("applythreadprefix");
+
+	$prefixes = array();
+	$prefix_cache = build_prefixes(0);
+	if(empty($prefix_cache))
+	{
+		$prefixes = false;
+	}
+
+	// Go through each of our prefixes and decide which ones we can use
+	if(!empty($prefix_cache))
+	{
+		foreach($prefix_cache as $prefix)
+		{
+			if($prefix['forums'] != "-1")
+			{
+				// Decide whether this prefix can be used in our forum
+				$forums = explode(",", $prefix['forums']);
+
+				if(!in_array($thread['fid'], $forums))
+				{
+					// This prefix is not in our forum list
+					continue;
+				}
+			}
+
+			if(is_member($prefix['groups']))
+			{
+				// The current user can use this prefix
+				$prefixes[$prefix['pid']] = $prefix;
+			}
+		}
+	}
+
+	if($prefixes)
+	{
+		eval("\$applyprefix = \"".$templates->get("showthread_moderationoptions_applyprefix")."\";");
+	}
+}
+
+// Add option to forum display mod menu
+function applythreadprefix_forum()
+{
+	global $mybb, $lang, $templates, $applyprefix;
+	$lang->load("applythreadprefix");
+
+	$fid = $mybb->get_input('fid', MyBB::INPUT_INT);
+
+	$prefixes = array();
+	$prefix_cache = build_prefixes(0);
+	if(empty($prefix_cache))
+	{
+		$prefixes = false;
+	}
+
+	// Go through each of our prefixes and decide which ones we can use
+	if(!empty($prefix_cache))
+	{
+		foreach($prefix_cache as $prefix)
+		{
+			if($prefix['forums'] != "-1")
+			{
+				// Decide whether this prefix can be used in our forum
+				$forums = explode(",", $prefix['forums']);
+
+				if(!in_array($fid, $forums))
+				{
+					// This prefix is not in our forum list
+					continue;
+				}
+			}
+
+			if(is_member($prefix['groups']))
+			{
+				// The current user can use this prefix
+				$prefixes[$prefix['pid']] = $prefix;
+			}
+		}
+	}
+
+	if($prefixes)
+	{
+		eval("\$applyprefix = \"".$templates->get("forumdisplay_inlinemoderation_applyprefix")."\";");
+	}
 }
 
 ?>
