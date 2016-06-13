@@ -176,6 +176,7 @@ function applythreadprefix_run()
 
 	if($mybb->user['uid'] != 0)
 	{
+		$mybb->user['username'] = htmlspecialchars_uni($mybb->user['username']);
 		eval("\$loginbox = \"".$templates->get("changeuserbox")."\";");
 	}
 	else
