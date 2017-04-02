@@ -21,5 +21,3 @@ $l['error_invalidthread'] = "The specified thread does not exist.";
 $l['error_invalidforum'] = "The specified forum does not exist.";
 $l['error_inline_nothreadsselected'] = "Sorry, but you did not select any threads to perform inline moderation on, or your previous moderation session has expired (Automatically after 1 hour of inactivity). Please select some threads and try again.";
 $l['error_no_prefixes'] = "There are no thread prefixes available.";
-
-?>

@@ -422,5 +422,3 @@ function applythreadprefix_forum()
 		eval("\$applyprefix = \"".$templates->get("forumdisplay_inlinemoderation_applyprefix")."\";");
 	}
 }
-
-?>
