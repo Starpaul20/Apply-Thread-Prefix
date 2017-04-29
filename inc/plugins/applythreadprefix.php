@@ -257,7 +257,7 @@ function applythreadprefix_run()
 		{
 			// From search page
 			$threads = getids($mybb->get_input('searchid'), 'search');
-			if(!is_moderator_by_tids($threads, 'candeletethreads'))
+			if(!is_moderator_by_tids($threads, 'canmanagethreads'))
 			{
 				error_no_permission();
 			}
@@ -265,7 +265,7 @@ function applythreadprefix_run()
 		else
 		{
 			$threads = getids($forum['fid'], 'forum');
-			if(!is_moderator($forum['fid'], 'candeletethreads'))
+			if(!is_moderator($forum['fid'], 'canmanagethreads'))
 			{
 				error_no_permission();
 			}
