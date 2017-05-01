@@ -236,10 +236,6 @@ function applythreadprefix_run()
 		}
 
 		$threadprefix = $mybb->get_input('threadprefix', MyBB::INPUT_INT);
-		if(!$threadprefix)
-		{
-			error($lang->no_prefix_selected);
-		}
 
 		$moderation->apply_thread_prefix($thread['tid'], $threadprefix);
 
@@ -319,10 +315,6 @@ function applythreadprefix_run()
 		}
 
 		$threadprefix = $mybb->get_input('threadprefix', MyBB::INPUT_INT);
-		if(!$threadprefix)
-		{
-			error($lang->no_prefix_selected);
-		}
 
 		$moderation->apply_thread_prefix($tlist, $threadprefix);
 
