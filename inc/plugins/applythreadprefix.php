@@ -331,41 +331,40 @@ function applythreadprefix_thread()
 	global $lang, $templates, $applyprefix, $thread;
 	$lang->load("applythreadprefix");
 
-	$prefixes = array();
-	$prefix_cache = build_prefixes(0);
-	if(empty($prefix_cache))
+	if(is_moderator($thread['fid'], 'canmanagethreads'))
 	{
 		$prefixes = false;
-	}
+		$prefix_cache = build_prefixes(0);
 
-	// Go through each of our prefixes and decide which ones we can use
-	if(!empty($prefix_cache))
-	{
-		foreach($prefix_cache as $prefix)
+		// Go through each of our prefixes and decide which ones we can use
+		if(!empty($prefix_cache))
 		{
-			if($prefix['forums'] != "-1")
+			foreach($prefix_cache as $prefix)
 			{
-				// Decide whether this prefix can be used in our forum
-				$forums = explode(",", $prefix['forums']);
-
-				if(!in_array($thread['fid'], $forums))
+				if($prefix['forums'] != "-1")
 				{
-					// This prefix is not in our forum list
-					continue;
+					// Decide whether this prefix can be used in our forum
+					$forums = explode(",", $prefix['forums']);
+
+					if(!in_array($thread['fid'], $forums))
+					{
+						// This prefix is not in our forum list
+						continue;
+					}
+				}
+
+				if(is_member($prefix['groups']))
+				{
+					// The current user can use this prefix
+					$prefixes = true;
 				}
 			}
-
-			if(is_member($prefix['groups']))
-			{
-				// The current user can use this prefix
-				$prefixes[$prefix['pid']] = $prefix;
-			}
 		}
-	}
 
-	if($prefixes)
-	{
-		eval("\$applyprefix = \"".$templates->get("showthread_moderationoptions_applyprefix")."\";");
+		if($prefixes == true)
+		{
+			eval("\$applyprefix = \"".$templates->get("showthread_moderationoptions_applyprefix")."\";");
+		}
 	}
 }
 
@@ -377,40 +376,39 @@ function applythreadprefix_forum()
 
 	$fid = $mybb->get_input('fid', MyBB::INPUT_INT);
 
-	$prefixes = array();
-	$prefix_cache = build_prefixes(0);
-	if(empty($prefix_cache))
+	if(is_moderator($fid, 'canmanagethreads'))
 	{
 		$prefixes = false;
-	}
+		$prefix_cache = build_prefixes(0);
 
-	// Go through each of our prefixes and decide which ones we can use
-	if(!empty($prefix_cache))
-	{
-		foreach($prefix_cache as $prefix)
+		// Go through each of our prefixes and decide which ones we can use
+		if(!empty($prefix_cache))
 		{
-			if($prefix['forums'] != "-1")
+			foreach($prefix_cache as $prefix)
 			{
-				// Decide whether this prefix can be used in our forum
-				$forums = explode(",", $prefix['forums']);
-
-				if(!in_array($fid, $forums))
+				if($prefix['forums'] != "-1")
 				{
-					// This prefix is not in our forum list
-					continue;
+					// Decide whether this prefix can be used in our forum
+					$forums = explode(",", $prefix['forums']);
+
+					if(!in_array($fid, $forums))
+					{
+						// This prefix is not in our forum list
+						continue;
+					}
+				}
+
+				if(is_member($prefix['groups']))
+				{
+					// The current user can use this prefix
+					$prefixes = true;
 				}
 			}
-
-			if(is_member($prefix['groups']))
-			{
-				// The current user can use this prefix
-				$prefixes[$prefix['pid']] = $prefix;
-			}
 		}
-	}
 
-	if($prefixes)
-	{
-		eval("\$applyprefix = \"".$templates->get("forumdisplay_inlinemoderation_applyprefix")."\";");
+		if($prefixes == true)
+		{
+			eval("\$applyprefix = \"".$templates->get("forumdisplay_inlinemoderation_applyprefix")."\";");
+		}
 	}
 }
