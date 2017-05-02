@@ -1,6 +1,6 @@
 ## INFORMATION ##
 
-Apply Thread Prefix (1.1) for MyBB 1.8
+Apply Thread Prefix (1.2) for MyBB 1.8
 Created by: Starpaul20
 Copyright: ©2011
 License: GPL

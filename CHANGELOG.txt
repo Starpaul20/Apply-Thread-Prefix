@@ -1,3 +1,12 @@
+1.2 (May 2nd, 2017)
+- Throw error message if no thread prefixes are available
+- Hide Apply Thread Prefix option if no prefixes are available
+- Sanitized username
+- Removed PHP closing tags
+- Use THIS_SCRIPT for template caching
+- Add ability to "clear"/unset a current prefix (Issue #1)
+- Removed useless globals
+
 1.1 (March 25th, 2015)
 - Using get_input instead of intval input
 - Sanitized threadprefix input
