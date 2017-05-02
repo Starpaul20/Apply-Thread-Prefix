@@ -166,7 +166,7 @@ function applythreadprefix_deactivate()
 // Apply Thread Prefix moderation page
 function applythreadprefix_run()
 {
-	global $db, $mybb, $lang, $templates, $theme, $headerinclude, $header, $footer, $loginbox, $applyprefix, $moderation, $inlineids;
+	global $mybb, $lang, $templates, $theme, $headerinclude, $header, $footer, $moderation;
 	$lang->load("applythreadprefix");
 
 	if($mybb->input['action'] != "applyprefix" && $mybb->input['action'] != "do_applyprefix" && $mybb->input['action'] != "multiapplyprefix" && $mybb->input['action'] != "do_multiapplyprefix")
@@ -331,6 +331,7 @@ function applythreadprefix_thread()
 	global $lang, $templates, $applyprefix, $thread;
 	$lang->load("applythreadprefix");
 
+	$applyprefix = '';
 	if(is_moderator($thread['fid'], 'canmanagethreads'))
 	{
 		$prefixes = false;
@@ -376,6 +377,7 @@ function applythreadprefix_forum()
 
 	$fid = $mybb->get_input('fid', MyBB::INPUT_INT);
 
+	$applyprefix = '';
 	if(is_moderator($fid, 'canmanagethreads'))
 	{
 		$prefixes = false;
