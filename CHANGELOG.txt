@@ -1,3 +1,9 @@
+1.3 (June 23rd, 2021)
+- Fixed PHP 8.0 errors
+- Use require_once for template updates
+- Added check to see if THIS_SCRIPT is defined (Issue #3)
+- Added option_mirage class to mod option
+
 1.2 (May 2nd, 2017)
 - Throw error message if no thread prefixes are available
 - Hide Apply Thread Prefix option if no prefixes are available
