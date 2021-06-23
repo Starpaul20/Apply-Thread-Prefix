@@ -134,7 +134,7 @@ function applythreadprefix_activate()
 
 	$insert_array = array(
 		'title'		=> 'showthread_moderationoptions_applyprefix',
-		'template'	=> $db->escape_string('<option value="applyprefix">{$lang->apply_thread_prefix}</option>'),
+		'template'	=> $db->escape_string('<option class="option_mirage" value="applyprefix">{$lang->apply_thread_prefix}</option>'),
 		'sid'		=> '-1',
 		'version'	=> '',
 		'dateline'	=> TIME_NOW
