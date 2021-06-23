@@ -147,7 +147,7 @@ function applythreadprefix_activate()
 	);
 	$db->insert_query("templates", $insert_array);
 
-	include MYBB_ROOT."/inc/adminfunctions_templates.php";
+	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("showthread_moderationoptions_manage", "#".preg_quote('{$lang->remove_subscriptions}</option>')."#i", '{$lang->remove_subscriptions}</option>{$applyprefix}');
 	find_replace_templatesets("forumdisplay_inlinemoderation_manage", "#".preg_quote('{$lang->move_threads}</option>')."#i", '{$lang->move_threads}</option>{$applyprefix}');
 }
@@ -158,7 +158,7 @@ function applythreadprefix_deactivate()
 	global $db;
 	$db->delete_query("templates", "title IN('moderation_applyprefix','moderation_inline_applyprefix','showthread_moderationoptions_applyprefix','forumdisplay_inlinemoderation_applyprefix')");
 
-	include MYBB_ROOT."/inc/adminfunctions_templates.php";
+	require_once MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("showthread_moderationoptions_manage", "#".preg_quote('{$applyprefix}')."#i", '', 0);
 	find_replace_templatesets("forumdisplay_inlinemoderation_manage", "#".preg_quote('{$applyprefix}')."#i", '', 0);
 }
