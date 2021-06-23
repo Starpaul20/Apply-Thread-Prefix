@@ -213,7 +213,7 @@ function applythreadprefix_run()
 		add_breadcrumb($thread['subject'], get_thread_link($thread['tid']));
 		add_breadcrumb($lang->nav_apply_prefix);
 
-		$prefixselect = build_prefix_select($thread['fid'], $mybb->input['threadprefix']);
+		$prefixselect = build_prefix_select($thread['fid'], $mybb->get_input('threadprefix', MyBB::INPUT_INT));
 
 		// If there are no prefixes, throw error message
 		if(!$prefixselect)
@@ -287,7 +287,7 @@ function applythreadprefix_run()
 		build_forum_breadcrumb($forum['fid']);
 		add_breadcrumb($lang->nav_apply_prefix);
 
-		$prefixselect = build_prefix_select($forum['fid'], $mybb->input['threadprefix']);
+		$prefixselect = build_prefix_select($forum['fid'], $mybb->get_input('threadprefix', MyBB::INPUT_INT));
 
 		// If there are no prefixes, throw error message
 		if(!$prefixselect)
