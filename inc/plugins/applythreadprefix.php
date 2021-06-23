@@ -11,24 +11,27 @@ if(!defined("IN_MYBB"))
 }
 
 // Neat trick for caching our custom template(s)
-if(THIS_SCRIPT == 'showthread.php')
+if(defined('THIS_SCRIPT'))
 {
-	global $templatelist;
-	if(isset($templatelist))
+	if(THIS_SCRIPT == 'showthread.php')
 	{
-		$templatelist .= ',';
+		global $templatelist;
+		if(isset($templatelist))
+		{
+			$templatelist .= ',';
+		}
+		$templatelist .= 'showthread_moderationoptions_applyprefix';
 	}
-	$templatelist .= 'showthread_moderationoptions_applyprefix';
-}
 
-if(THIS_SCRIPT == 'forumdisplay.php')
-{
-	global $templatelist;
-	if(isset($templatelist))
+	if(THIS_SCRIPT == 'forumdisplay.php')
 	{
-		$templatelist .= ',';
+		global $templatelist;
+		if(isset($templatelist))
+		{
+			$templatelist .= ',';
+		}
+		$templatelist .= 'forumdisplay_inlinemoderation_applyprefix';
 	}
-	$templatelist .= 'forumdisplay_inlinemoderation_applyprefix';
 }
 
 // Tell MyBB when to run the hooks
